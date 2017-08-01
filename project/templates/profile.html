@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block head %}
+	<meta property="og:url"           content="http://maxnovikov.com{{ request.get_full_path }}"/>
+	<meta property="og:title"         content="maxnovikov.com - tech blog" />
+	<meta property="og:description"   content="{{ instance.title }}" />
+	<meta property="og:image"         content="{% static 'img/share-1.jpg' %}" />
+{% endblock head %}
+
+{% block content %}
+<div class="col-sm-6 col-sm-offset-3">
+<div>
+  <div style="" >
+    <!-- <img class="profile-img" src="{% static 'img/profile.png' %}" align="left"> -->
+    <img src="{{ profile.image.url }}" class="profile-img" align="left">
+    <br>
+    <h2><b>{{ profile.name }}</b></h2>
+    <hr style="width: 250px; " align="left">
+    <p>{{ profile.occupation }}</p>
+    <small>{{ profile.city }}</small>
+  </div>
+  <!-- <div style="float: left; clear: both; margin-top: 30px;">
+    <h3><b>Education</b></h3>
+    <hr style="width: 600px">
+    <h4>{{ profile.university }}</h4>
+    <h5>{{ profile.faculty }}</h5>
+    <h5>{{ profile.grad_years }}</h5>
+  </div>
+  <div  style="float: left; clear: both; margin-top: 30px;">
+    <h3><b>Work Experience</b></h3>
+    <hr style="width: 600px">
+    {% for wp in profile.get_workplaces %}
+        <h4><b>{{ wp.company }}</b></h4>
+        <h5>{{ wp.project }}</h5>
+        <h5>{{ wp.corp_title }}</h5>
+        <h5>{{ wp.start_end_dates }}</h5>
+        <p style="font-size: 15px">{{ wp.description }}</p>
+        <br>
+    {% endfor %} -->
+  </div>
+  <div  style="float: left; clear: both; margin-top: 30px;">
+    <h3><b>Skills</b></h3>
+    <hr style="width: 600px">
+    {% for skillgroup in profile.get_skill_groups %}
+        <h4><b>{{ skillgroup.title }}</b></h4>
+        {% for skill in skillgroup.get_related_skills %}
+            <h5>{{ skill }}</h5>
+        {% endfor %}
+        <br>
+    {% endfor %}
+  </div>
+
+
+</div>
+</div>
+{% endblock content %}

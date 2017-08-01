@@ -1,0 +1,99 @@
+{% extends 'base_m.html' %}
+{% load staticfiles %}{% load crispy_forms_tags %}
+
+{% block head %}
+	<meta property="og:url"           content="http://maxnovikov.com"/>
+	<meta property="og:title"         content="maxnovikov.com - tech blog" />
+<!-- 	<meta property="og:description"   content="{{ instance.title }}" />
+	<meta property="og:image"         content="{% static 'img/share-1.jpg' %}" /> -->
+
+
+<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
+
+{% endblock head %}
+
+{% block content %}
+<div class="col-sm-6 col-sm-offset-3">
+
+<div style="margin-top:65px; font-family: 'Trebuchet MS', Helvetica, sans-serif">
+
+    <p style="font-family: 'Trebuchet MS', Helvetica, sans-serif">{{ welcome_phrase }}</p>
+    <br>
+    <p>Want to stay in touch or hire me? Contact and subscribe! For recruters: short CV is available <a href="/profile">here</a></p>
+
+    <div style="margin-top:30px">
+    <h3>Contacts</h3>
+    <p>Email: {{ email }}</p>
+
+    </div>
+     <div class="share-toggle panel-body">
+          <div class="fb-share-button">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://maxnovikov.com" target="_blank">
+            <img  class="share-image" src="{% static 'img/facebook-icon.png' %}"/>
+            </a>
+          </div>
+          <div class="vk-share-button">
+            <script type="text/javascript">
+            document.write(VK.Share.button({
+              url: 'http://maxnovikov.com',
+              // title: 'Заголовок страницы',
+              // image: "{% static 'img/facebook-icon.png' %}",
+              // description: "My page",
+              noparse: false,
+            },
+            { 
+              type: "custom", 
+              text: "<img  class=\"share-image\" src=\"http://vk.com/images/share_32_eng.png\" />", 
+              eng: 1}));
+          </script>
+          </div>
+          <div class="twttr-share-button">
+            <a href="https://twitter.com/share?url=http://maxnovikov.com">
+              <img class="share-image" src="{% static 'img/twitter-icon.png' %}">
+            </a>
+          </div>
+          <div style="margin-top:7px; float:left; padding-left:4px; font-size:17px">
+            <a id="subscribe-btn" class="subscribe" href="">
+              Subscribe
+            </a>
+          </div>
+        </div>
+
+        <!-- Pop-up window for subscribing -->
+        <div id="dialog-form">
+            <form id="subscribeFrm" enctype="multipart/form-data" method="POST">{% csrf_token %}
+                <label for="name">Email</label>
+                <input type="text" name="name" id="txt2" class="text ui-widget-content ui-corner-all" />
+            </form>
+        </div>
+</div>
+</div>
+
+<script type="text/javascript">
+    $('#subscribe-btn').click(function(event) {
+        event.preventDefault();
+        $('.subscribe-input-data').show();
+        $("#dialog-form").dialog("open");
+    });
+
+   
+   $(function() {
+    $("#dialog-form").dialog({
+        autoOpen: false,
+        modal: false,
+        buttons: {
+            "Submit": function() {
+                var text1 = $("#txt1");
+                var text2 = $("#txt2");
+
+                console.log(text2.val());   
+                text1.val(text2.val().substr(1,9));
+                $('#subscribeFrm').submit();
+                $(this).dialog("close");
+            }
+        }
+    });
+});
+</script>
+{% endblock content %}

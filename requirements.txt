@@ -1,0 +1,5 @@
+Django==1.8
+django_markdown_deux==1.0.5
+django_pagedown==0.1.1
+django-responsive2
+django_crispy_forms==1.0.0

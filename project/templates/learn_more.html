@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load staticfiles %}{% load crispy_forms_tags %}
+
+{% block head %}
+	<meta property="og:url"           content="https://maxnovikov.com/blog/more/"/>
+	<meta property="og:title"         content="maxnovikov.com - tech blog" />
+	<meta property="og:description"   content="Technical blog for IT leaders and developers" />
+	<meta property="og:image"         content="{% static 'img/blog_background.jpg' %}" />
+
+
+<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
+
+{% endblock head %}
+
+{% block content %}
+<div class="col-sm-6 col-sm-offset-3" style="min-height: 80%">
+
+<div style="margin-top:85px; font-family: 'Trebuchet MS', Helvetica, sans-serif">
+
+    <p style="font-family: 'Trebuchet MS', Helvetica, sans-serif">{{ welcome_phrase }}</p>
+    <br>
+    <p>Want to stay in touch? Contact and subscribe! Short list of what I actually can do is available <a href="/profile">here</a></p>
+
+
+    <div style="margin-top:30px">
+    <h3>Contacts</h3>
+    <p>Email: {{ email }}</p>
+
+    </div>
+    {% if flavour == 'mobile' %}
+      <div class="share-toggle panel-body">
+          <div class="fb-share-button">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://maxnovikov.com/blog/" target="_blank">
+            <img  class="share-image" src="{% static 'img/facebook-icon.png' %}"/>
+            </a>
+          </div>
+        
+          <div class="twttr-share-button">
+            <a href="https://twitter.com/share?url=http://maxnovikov.com">
+              <img class="share-image" src="{% static 'img/twitter-icon.png' %}">
+            </a>
+          </div>
+          <div style="margin-top:7px; float:left; padding-left:4px; font-size:17px">
+            <a id="subscribe-btn" class="subscribe" href="">
+              Subscribe
+            </a>
+          </div>
+        </div>
+    {% else %}
+     <div class="share-toggle panel-body">
+          <div class="fb-share-button">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://maxnovikov.com/blog/" target="_blank">
+            <img  class="share-image" src="{% static 'img/facebook-icon.png' %}"/>
+            </a>
+          </div>
+          <div class="vk-share-button">
+            <script type="text/javascript">
+            document.write(VK.Share.button({
+              url: 'http://maxnovikov.com/blog/',
+              // title: 'Заголовок страницы',
+              // image: "{% static 'img/facebook-icon.png' %}",
+              // description: "My page",
+              noparse: false,
+            },
+            { 
+              type: "custom", 
+              text: "<img  class=\"share-image\" src=\"https://vk.com/images/share_32_eng.png\" />", 
+              eng: 1}));
+          </script>
+          </div>
+          <div class="twttr-share-button">
+            <a href="https://twitter.com/share?url=https://maxnovikov.com">
+              <img class="share-image" src="{% static 'img/twitter-icon.png' %}">
+            </a>
+          </div>
+          <div style="margin-top:7px; float:left; padding-left:4px">
+            <a id="subscribe-btn" class="subscribe" href="">
+              Subscribe
+            </a>
+          </div>
+        </div>
+      {% endif %}
+        <!-- Pop-up window for subscribing -->
+        <div id="dialog-form">
+            <form id="subscribeFrm" enctype="multipart/form-data" method="POST">{% csrf_token %}
+                <label for="name">Email</label>
+                <input type="text" name="name" id="txt2" class="text ui-widget-content ui-corner-all" />
+            </form>
+        </div>
+</div>
+</div>
+
+<script type="text/javascript">
+    $('#subscribe-btn').click(function(event) {
+        event.preventDefault();
+        $('.subscribe-input-data').show();
+        $("#dialog-form").dialog("open");
+    });
+
+   
+   $(function() {
+    $("#dialog-form").dialog({
+        autoOpen: false,
+        modal: false,
+        buttons: {
+            "Submit": function() {
+                var text1 = $("#txt1");
+                var text2 = $("#txt2");
+
+                console.log(text2.val());   
+                text1.val(text2.val().substr(1,9));
+                $('#subscribeFrm').submit();
+                $(this).dialog("close");
+            }
+        }
+    });
+});
+</script>
+{% endblock content %}

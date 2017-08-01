@@ -1,0 +1,5 @@
+*.pyc
+*.sqlite3
+*.log
+**/__pycache__
+media_cdn/**

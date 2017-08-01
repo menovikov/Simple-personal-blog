@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load staticfiles %}{% load crispy_forms_tags %}
+
+{% block head %}
+	<meta property="og:url"           content="http://maxnovikov.com"/>
+	<meta property="og:title"         content="maxnovikov.com - tech blog" />
+	<!-- <meta property="og:description"   content="{{ instance.title }}" /> -->
+<!-- 	<meta property="og:image"         content="{% static 'img/share-1.jpg' %}" /> -->
+
+
+<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
+
+{% endblock head %}
+
+{% block content %}
+<div class="col-sm-6 col-sm-offset-3" style="height: 80%">
+
+<div style="margin-top:85px; font-family: 'Trebuchet MS', Helvetica, sans-serif">
+  <h3>Error 404. Not found</h3>
+  <p>Opps, seems that there is no such page</p>       
+</div>
+</div>
+
+
+{% endblock content %}

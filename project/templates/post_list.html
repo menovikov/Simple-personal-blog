@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load staticfiles %}{% load custom_tags %}
+
+{% block head %}
+<meta property="og:url"           content="http://maxnovikov.com/blog" />
+  <meta property="og:type"          content="website" />
+  <meta property="og:title"         content="maxnovikov.com" />
+  <meta property="og:description"   content="Technical blog for IT leaders" />
+ <meta property="og:image"         content="{% static 'img/blog_background.jpg' %}" />
+{% endblock head %}
+
+{% block content %}
+<div style="min-height:67%">
+{% for post in post_list %}
+<div class="row">
+  <div class="col-sm-6 col-sm-offset-3">
+    <div class="thumbnail">
+      <div class="caption" >
+        <h2><a href="{% url 'post_detail' post.id %}" class="heading-link">{{ post }}</a></h2>
+        <br/>
+        {% if post.image %}
+        <div class="image-wrapper">
+        <img src="{{ post.image.url }}" style="padding: 25px" class="img-responsive img-zoom"/>
+        </div>
+        {% endif %}
+        <p>{{ post.content|img_exclude|truncatechars:250|safe }}</p>
+      </div>
+      <p><small>{{ post.created|date:"j F P" }}</small>&emsp;<small><image class="img-read-time" src="{% static 'img/read-time-watch-1.png' %}" /> {{ post.read_time }}</small></p>
+      {% for tag in post.tag.all %}
+      	<a class="text-tag" href="{% url 'post_by_tag' tag.title %}">{{ tag }}</a>
+      {% endfor %}
+
+      {% if flavour == 'mobile' %}
+        <div class="">
+        <br>
+        <div class="share-toggle panel-body">
+          <div class="fb-share-button">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://maxnovikov.com{% url 'post_detail' post.id %}" target="_blank">
+            <img  class="share-image" src="{% static 'img/facebook-icon.png' %}"/>
+            </a>
+          </div>
+          <div class="twttr-share-button">
+            <a href="https://twitter.com/share?url=http://maxnovikov.com{% url 'post_detail' post.id %}">
+              <img class="share-image" src="{% static 'img/twitter-icon.png' %}">
+            </a>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="parent-share-toggle panel panel-default">
+      <br>
+        <div class="panel-head">
+          <div class="shareToggleBtn badge">Share</div>
+        </div>
+        <div class="share-toggle panel-body" hidden>
+          <div class="fb-share-button">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://maxnovikov.com{% url 'post_detail' post.id %}" target="_blank">
+            <img  class="share-image" src="{% static 'img/facebook-icon.png' %}"/>
+            </a>
+          </div>
+          <div class="vk-share-button">
+            <script type="text/javascript">
+            document.write(VK.Share.button({
+              url: 'https://maxnovikov.com{% url "post_detail" post.id %}',
+              // title: 'Заголовок страницы',
+              // image: "{% static 'img/facebook-icon.png' %}",
+              // description: "My page",
+              noparse: false,
+            },
+            { 
+              type: "custom", 
+              text: "<img  class=\"share-image\" src=\"https://vk.com/images/share_32_eng.png\" />", 
+              eng: 1}));
+          </script>
+          </div>
+          <div class="twttr-share-button">
+            <a href="https://twitter.com/share?url=https://maxnovikov.com{% url 'post_detail' post.id %}">
+              <img class="share-image" src="{% static 'img/twitter-icon.png' %}">
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<br/>
+<hr/>
+{% empty %}
+<div class="row">
+  <div class="col-sm-6 col-sm-offset-3">
+    <div class="thumbnail" style="height: 67%">
+      <div class="caption" style="margin-top:100px">
+      <h3>Ooops, seems like there is nothing here yet</h3>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+</div>
+<script type="text/javascript">
+$(".shareToggleBtn").mouseenter(function(){
+  parent = $(this).parent().parent();
+  parent.children().last().slideToggle()
+});
+$("img").hover(function(){
+   $('.img-zoom').hover(function() {
+        $(this).addClass('transition');
+ 
+    }, function() {
+        $(this).removeClass('transition');
+    });
+});
+</script>
+{% endblock content %}
+

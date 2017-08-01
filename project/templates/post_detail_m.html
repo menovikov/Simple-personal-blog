@@ -1,0 +1,124 @@
+{% extends 'base_m.html' %}
+{% load staticfiles %}
+
+{% block head %}
+	<meta property="og:url"           content="Full path" />
+	<meta property="og:type"          content="type" />
+	<meta property="og:title"         content="Your Website Title" />
+	<meta property="og:description"   content="Your description" />
+	<meta property="og:image"         content="{% static 'img/share-1.jpg' %}" />
+
+<script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
+{% endblock head %}
+
+{% block content %}
+<div class="col-sm-10 col-md-7 col-sm-offset-3">
+<h2>{{ instance.title }}</h2>
+{% if user.is_authenticated %}<a href="{% url 'post_edit' instance.id %}">Edit</a>{% endif %}
+<p><small>{{ instance.created }}</small>&emsp;<small><image class="img-read-time" src="{% static 'img/read-time-watch-1.png' %}" /> {{ instance.read_time }}</small></p>
+      <div class="">
+        <div class="share-toggle panel-body">
+          <div class="fb-share-button">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://maxnovikov.com{% url 'post_detail' instance.id %}" target="_blank">
+            <img  class="share-image" src="{% static 'img/facebook-icon.png' %}"/>
+            </a>
+          </div>
+          <!-- <div class="vk-share-button">
+            <script type="text/javascript">
+            document.write(VK.Share.button({
+              url: 'http://maxnovikov.com',
+              // title: 'Заголовок страницы',
+              // image: "{% static 'img/facebook-icon.png' %}",
+              // description: "My page",
+              noparse: false,
+            },
+            { 
+              type: "custom", 
+              text: "<img  class=\"share-image\" src=\"http://vk.com/images/share_32_eng.png\" />", 
+              eng: 1}));
+          </script>
+          </div> -->
+          <div class="twttr-share-button">
+            <a href="https://twitter.com/share?url=http://maxnovikov.com{% url 'post_detail' instance.id %}">
+              <img class="share-image" src="{% static 'img/twitter-icon.png' %}">
+            </a>
+          </div>
+        </div>
+      </div>
+<br/>
+<p>{{ instance.get_markdown }}</p>
+{% for tag in instance.tag.all %}
+    <a class="text-tag" href="{% url 'post_by_tag' tag.title %}">{{ tag }}</a>
+{% endfor %}
+<br>
+<br>
+<div class="">
+        <div class="share-toggle panel-body">
+          <div class="fb-share-button">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http://maxnovikov.com{% url 'post_detail' instance.id %}" target="_blank">
+            <img  class="share-image" src="{% static 'img/facebook-icon.png' %}"/>
+            </a>
+          </div>
+          <!-- <div class="vk-share-button">
+            <script type="text/javascript">
+            document.write(VK.Share.button({
+              url: 'http://maxnovikov.com',
+              // title: 'Заголовок страницы',
+              // image: "{% static 'img/facebook-icon.png' %}",
+              // description: "My page",
+              noparse: false,
+            },
+            { 
+              type: "custom", 
+              text: "<img  class=\"share-image\" src=\"http://vk.com/images/share_32_eng.png\" />", 
+              eng: 1}));
+          </script>
+          </div> -->
+          <div class="twttr-share-button">
+            <a href="https://twitter.com/share?url=http://maxnovikov.com{% url 'post_detail' instance.id %}">
+              <img class="share-image" src="{% static 'img/twitter-icon.png' %}">
+            </a>
+          </div>
+          <div style="margin-top:7px; float:left; padding-left:4px; font-size:17px">
+            <a id="subscribe-btn" class="subscribe" href="">
+              Subscribe
+            </a>
+          </div>
+          <!-- Pop-up window for subscribing -->
+              <div id="dialog-form">
+                  <form id="subscribeFrm" enctype="multipart/form-data" method="POST">{% csrf_token %}
+                      <label for="name">Email</label>
+                      <input type="text" name="name" id="txt2" class="text ui-widget-content ui-corner-all" />
+                  </form>
+              </div>
+        </div>
+      </div>
+</div>
+<script type="text/javascript">
+  $('#subscribe-btn').click(function(event) {
+      event.preventDefault();
+      $('.subscribe-input-data').show();
+      $("#dialog-form").dialog("open");
+  });
+
+   
+   $(function() {
+    $("#dialog-form").dialog({
+        autoOpen: false,
+        modal: false,
+        buttons: {
+            "Submit": function() {
+                var text1 = $("#txt1");
+                var text2 = $("#txt2");
+
+                console.log(text2.val());   
+                text1.val(text2.val().substr(1,9));
+                $('#subscribeFrm').submit();
+                $(this).dialog("close");
+            }
+        }
+    });
+});
+</script>
+{% endblock content %}
